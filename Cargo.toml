@@ -1,6 +1,6 @@
 [package]
 name = "quiet-list"
-version = "0.1.0"
+version = "0.1.1"
 description = "A wxDragon list of any length whose rows can change without the screen reader reading them out again"
 readme = "README.md"
 repository = "https://github.com/trypsynth/quiet-list"

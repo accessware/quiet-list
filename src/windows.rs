@@ -131,6 +131,14 @@ impl<K: Clone + Eq + Hash> State<K> {
 	}
 }
 
+/// The start of `label` that can show in a row `width` pixels wide, with half as much again to spare since `char_width`
+/// is only an average. Drawing takes time in proportion to the text's length even past the row's edge, and every row is
+/// drawn on every move.
+fn visible_part(label: &str, width: i32, char_width: i32) -> &str {
+	let limit = usize::try_from(width / char_width.max(1) * 3 / 2).unwrap_or(0);
+	label.char_indices().nth(limit).map_or(label, |(end, _)| &label[..end])
+}
+
 fn row_height(window: ScrolledWindow) -> i32 {
 	window.get_char_height() + 2 * PADDING
 }
@@ -398,7 +406,7 @@ impl<K: Clone + Eq + Hash + 'static> Inner<K> {
 				SystemColour::WindowText
 			};
 			dc.set_text_foreground(SystemSettings::get_colour(text));
-			dc.draw_text(&label, 2 * PADDING, y + text_top);
+			dc.draw_text(visible_part(&label, width, dc.get_char_width()), 2 * PADDING, y + text_top);
 		}
 	}
 
@@ -759,5 +767,31 @@ impl<K: Clone + Eq + Hash + 'static> QuietList<K> {
 	#[expect(clippy::must_use_candidate, reason = "moving the selection is the point; whether it moved is extra")]
 	pub fn step(&self, step: Step) -> bool {
 		self.inner.step(step)
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::visible_part;
+
+	#[test]
+	fn a_label_that_fits_is_left_whole() {
+		assert_eq!(visible_part("short", 100, 10), "short");
+	}
+
+	#[test]
+	fn a_long_label_is_cut_with_room_to_spare() {
+		assert_eq!(visible_part(&"x".repeat(1000), 100, 10), "x".repeat(15));
+	}
+
+	#[test]
+	fn the_cut_falls_between_characters() {
+		assert_eq!(visible_part(&"日本語".repeat(10), 20, 10), "日本語");
+	}
+
+	#[test]
+	fn nothing_shows_in_a_row_with_no_width() {
+		assert_eq!(visible_part("text", 0, 10), "");
+		assert_eq!(visible_part("text", -5, 10), "");
 	}
 }
