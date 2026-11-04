@@ -317,10 +317,6 @@ impl<K: Clone + Eq + Hash + 'static> QuietList<K> {
 
 	/// Moves the selection as a navigation key would, whether or not the list has focus, and runs
 	/// the selection callback. Returns whether the selection moved.
-	#[cfg_attr(
-		not(windows),
-		expect(clippy::must_use_candidate, reason = "moving the selection is the point; whether it moved is extra")
-	)]
 	pub fn step(&self, step: Step) -> bool {
 		let len = self.len();
 		if len == 0 {
