@@ -14,8 +14,8 @@ rust-version = "1.88"
 wxdragon = { version = "0.9.24", default-features = false }
 
 [target.'cfg(windows)'.dependencies]
-accesskit = "0.25.1"
-accesskit_windows = "0.35.1"
+accesskit = "0.25.2"
+accesskit_windows = "0.35.2"
 windows-sys = { version = "0.61.2", features = ["Win32_UI_Input_KeyboardAndMouse"] }
 
 [lints.clippy]
