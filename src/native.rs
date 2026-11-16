@@ -9,7 +9,10 @@ use std::{
 	rc::Rc,
 };
 
-use wxdragon::{ffi::wxd_Window_t, prelude::*};
+// The braces keep the handle's name to the one segment `absolute_paths` allows, as in
+// `windows.rs`, where they hold more than one name. rustfmt would take them off this one.
+#[rustfmt::skip]
+use wxdragon::{ffi::{wxd_Window_t}, prelude::*};
 
 use crate::{
 	Select, Step,
