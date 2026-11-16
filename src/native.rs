@@ -249,6 +249,11 @@ impl<K: Clone + Eq + Hash + 'static> QuietList<K> {
 		self.callbacks.changing.set(false);
 	}
 
+	/// Changes what screen readers call the list, such as when it starts showing something else.
+	pub fn set_name(&self, name: &str) {
+		self.control.set_accessibility_label(name);
+	}
+
 	/// Whether a list that shows something new starts on its last row instead of its first.
 	pub fn set_start_at_end(&self, at_end: bool) {
 		self.start_at_end.set(at_end);

@@ -35,7 +35,7 @@ let messages = QuietList::with_labeler(&panel, "Messages", move |ids: &[MessageI
 messages.update(ids, Select::Start);
 ```
 
-Create the list's label just before it with the same parent, as for any control, so screen readers on Windows find it, and pass the spoken name to the constructor too.
+Create the list's label just before it with the same parent, as for any control, so screen readers on Windows find it, and pass the spoken name to the constructor too. `set_name` changes it later, for a list that starts showing something else.
 
 The list handles the arrow keys, Page Up, Page Down, Home, End, Tab and type-to-find itself. Your app gets the rest through callbacks: `on_selection_changed`, `on_activate` (double-click, or a screen reader's click), `on_context_menu` (right-click, the Applications key or Shift+F10), `on_space`, and `on_key_down`, which sees every key before the list does. `step` moves the selection without the list having focus, for global shortcuts, and `select` moves it without running the selection callback, for apps that keep the selection in their own model.
 

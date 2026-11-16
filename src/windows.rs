@@ -738,6 +738,12 @@ impl<K: Clone + Eq + Hash + 'static> QuietList<K> {
 		self.inner.state.borrow().rows.is_empty()
 	}
 
+	/// Changes what screen readers call the list, such as when it starts showing something else.
+	pub fn set_name(&self, name: &str) {
+		name.clone_into(&mut self.inner.state.borrow_mut().name);
+		self.inner.push_tree();
+	}
+
 	/// Whether a list that shows something new starts on its last row instead of its first.
 	pub fn set_start_at_end(&self, at_end: bool) {
 		self.inner.start_at_end.set(at_end);
